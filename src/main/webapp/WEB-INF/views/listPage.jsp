@@ -50,12 +50,9 @@
             </tr>
         </c:forEach>
     </table>
-    <div align="center">
-        <h2><a href="/admin/add">Add user</a></h2>
-    </div>
-    <form action="/logout">
-        <button type="submit">Logout</button>
-    </form>
+    <h2><a href="/admin/add">Add user</a></h2>
+    <a href="/">Home</a>
+    <a href="/logout">Logout</a>
 </div>
 </body>
 </html>

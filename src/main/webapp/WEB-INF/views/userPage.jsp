@@ -11,6 +11,8 @@
     <title>User page</title>
 </head>
 <body>
-    <h3>Welcome ${}</h3>
+    <h3>Welcome user</h3>
+    <a href="/">Home</a>
+    <a href="/logout">Logout</a>
 </body>
 </html>

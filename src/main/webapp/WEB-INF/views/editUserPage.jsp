@@ -38,8 +38,8 @@
                 <td><input type="text" name="login" value="<c:out value="${user.login}"/>"></td>
             </tr>
             <tr>
-                <th>Password: </th>
-                <td><input type="text" name="password" value="<c:out value="${user.password}"/>"></td>
+                <th>New password: </th>
+                <td><input type="text" name="password"/></td>
             </tr>
             <tr>
                 <th>Role: </th>
