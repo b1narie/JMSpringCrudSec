@@ -31,7 +31,7 @@ public class AdminController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @GetMapping(value = "/list")
     public ModelAndView allUsers() {
         List<User> users = userService.getAllUsers();
         ModelAndView modelAndView = new ModelAndView();
@@ -40,7 +40,7 @@ public class AdminController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/edit/{id}")
     public ModelAndView getEditPage(@PathVariable("id") Long id) {
         User user = userService.getUserById(id);
         ModelAndView modelAndView = new ModelAndView();
@@ -49,7 +49,7 @@ public class AdminController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    @PostMapping(value = "/edit")
     public ModelAndView editUser(@ModelAttribute("user") User user,
                                  @RequestParam("role") String role) {
         ModelAndView modelAndView = new ModelAndView();
@@ -62,14 +62,14 @@ public class AdminController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    @GetMapping(value = "/add")
     public ModelAndView getAddPage() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("addUserPage");
         return modelAndView;
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @PostMapping(value = "/add")
     public ModelAndView addUser(@ModelAttribute("user") User user,
                                 @RequestParam("role") String role) {
         ModelAndView modelAndView = new ModelAndView();
@@ -82,7 +82,7 @@ public class AdminController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/delete/{id}")
     public ModelAndView deleteUser(@PathVariable("id") Long id) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/admin/list");

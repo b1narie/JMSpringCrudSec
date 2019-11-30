@@ -51,7 +51,6 @@
         </c:forEach>
     </table>
     <h2><a href="/admin/add">Add user</a></h2>
-    <a href="/">Home</a>
     <a href="/logout">Logout</a>
 </div>
 </body>

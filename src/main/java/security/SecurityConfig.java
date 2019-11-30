@@ -1,6 +1,7 @@
-package config;
+package security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,16 +30,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/admin/**").hasAuthority("admin")
-                .antMatchers("/user/**").hasAuthority("user")
+                .antMatchers("/admin/*").hasAuthority("admin")
+                .antMatchers("/user/*").hasAuthority("user")
                 .and()
-                .formLogin().defaultSuccessUrl("/")
+                .formLogin().successHandler(authHandler())
                 .usernameParameter("login").passwordParameter("password")
                 .and()
                 .logout().logoutSuccessUrl("/")
                 .and()
                 .exceptionHandling().accessDeniedPage("/")
                 .and()
-                .csrf();
+                .csrf().disable();
+    }
+
+    @Bean
+    public AuthHandler authHandler() {
+        return new AuthHandler();
     }
 }

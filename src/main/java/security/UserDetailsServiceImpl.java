@@ -26,7 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user = userService.getUserByLogin(s);
         if (user != null) {
-            return new UserDetailsImpl(user);
+            return user;
         } else throw new IllegalArgumentException();
     }
 }

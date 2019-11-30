@@ -1,6 +1,5 @@
 package service;
 
-import dao.RoleDAO;
 import dao.UserDAO;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
