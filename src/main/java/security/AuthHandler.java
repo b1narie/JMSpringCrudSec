@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collection;
 
+@Component
 public class AuthHandler implements AuthenticationSuccessHandler {
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
@@ -24,23 +26,14 @@ public class AuthHandler implements AuthenticationSuccessHandler {
 
     private String handle(Authentication authentication) {
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        boolean isAdmin = false;
-        boolean isUser = false;
+
         for (GrantedAuthority authority : authorities) {
             if (authority.getAuthority().equals("admin")) {
-                isAdmin = true;
-                break;
+                return "/admin/list";
             } else if (authority.getAuthority().equals("user")) {
-                isUser = true;
-                break;
+                return "/user";
             }
         }
-        if (isAdmin) {
-            return "/admin/list";
-        } else if (isUser) {
-            return "/user";
-        } else {
-            throw new IllegalStateException();
-        }
+        throw new IllegalStateException();
     }
 }

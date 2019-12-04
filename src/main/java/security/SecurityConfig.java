@@ -15,11 +15,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
     private PasswordEncoder passwordEncoder;
+    private AuthHandler authHandler;
 
     @Autowired
-    public SecurityConfig(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+    public SecurityConfig(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder, AuthHandler authHandler) {
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
+        this.authHandler = authHandler;
     }
 
     @Override
@@ -30,21 +32,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/admin/*").hasAuthority("admin")
-                .antMatchers("/user/*").hasAuthority("user")
+                .antMatchers("/admin/**").hasAuthority("admin")
+                .antMatchers("/user/**").hasAuthority("user")
                 .and()
-                .formLogin().successHandler(authHandler())
-                .usernameParameter("login").passwordParameter("password")
+                .formLogin().successHandler(authHandler)
                 .and()
                 .logout().logoutSuccessUrl("/")
                 .and()
-                .exceptionHandling().accessDeniedPage("/")
+                .exceptionHandling().accessDeniedPage("/WEB-INF/views/AccessDeniedPage.jsp")
                 .and()
                 .csrf().disable();
     }
 
-    @Bean
-    public AuthHandler authHandler() {
-        return new AuthHandler();
-    }
+//    @Bean
+//    public AuthHandler authHandler() {
+//        return new AuthHandler();
+//    }
 }
