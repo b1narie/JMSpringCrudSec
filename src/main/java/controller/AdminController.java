@@ -5,8 +5,8 @@ import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import service.RoleService;
 import service.UserService;
 
@@ -32,62 +32,50 @@ public class AdminController {
     }
 
     @GetMapping(value = "/list")
-    public ModelAndView allUsers() {
+    public String allUsers(Model model) {
         List<User> users = userService.getAllUsers();
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("listPage");
-        modelAndView.addObject("users", users);
-        return modelAndView;
+        model.addAttribute("users", users);
+        return "listPage";
     }
 
     @GetMapping(value = "/edit/{id}")
-    public ModelAndView getEditPage(@PathVariable("id") Long id) {
+    public String getEditPage(@PathVariable("id") Long id, Model model) {
         User user = userService.getUserById(id);
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("editUserPage");
-        modelAndView.addObject("user", user);
-        return modelAndView;
+        model.addAttribute("user", user);
+        return "editUserPage";
     }
 
     @PostMapping(value = "/edit")
-    public ModelAndView editUser(@ModelAttribute("user") User user,
-                                 @RequestParam("role") String role) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:/admin/list");
+    public String editUser(@ModelAttribute("user") User user,
+                           @RequestParam("role") String role) {
         Set<Role> roles = new HashSet<>();
         roles.add(roleService.getRoleByName(role));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(roles);
         userService.updateUser(user);
-        return modelAndView;
+        return "redirect:/admin/list";
     }
 
     @GetMapping(value = "/add")
-    public ModelAndView getAddPage() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("addUserPage");
-        return modelAndView;
+    public String getAddPage() {
+        return "addUserPage";
     }
 
     @PostMapping(value = "/add")
-    public ModelAndView addUser(@ModelAttribute("user") User user,
+    public String addUser(@ModelAttribute("user") User user,
                                 @RequestParam("role") String role) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:/admin/list");
         Set<Role> roles = new HashSet<>();
         roles.add(roleService.getRoleByName(role));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(roles);
         userService.addUser(user);
-        return modelAndView;
+        return "redirect:/admin/list";
     }
 
     @GetMapping(value = "/delete/{id}")
-    public ModelAndView deleteUser(@PathVariable("id") Long id) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:/admin/list");
+    public String deleteUser(@PathVariable("id") Long id) {
         User userToDelete = userService.getUserById(id);
         userService.deleteUser(userToDelete);
-        return modelAndView;
+        return "redirect:/admin/list";
     }
 }
